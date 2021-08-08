@@ -1,0 +1,4 @@
+{
+    "fileUploadPath": "D:/DevelperTools/nginx-1.16.1/html/static",
+    "fileUploadUrlPrefix": "/static/"
+}

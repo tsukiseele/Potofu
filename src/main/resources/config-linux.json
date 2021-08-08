@@ -1,0 +1,4 @@
+{
+    "fileUploadPath": "/usr/share/nginx/html/static",
+    "fileUploadUrlPrefix": "/static/"
+}

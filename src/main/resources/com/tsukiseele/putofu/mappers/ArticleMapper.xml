@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tsukiseele.potofu.mappers.ArticleMapper">
+    <update id="update" parameterType="com.tsukiseele.potofu.models.Article">
+        update article
+        <trim prefix="set" suffixOverrides=",">
+            <if test="articleTitle != null">article_title=#{articleTitle},</if>
+            <if test="articleContent != null">article_content=#{articleContent},</if>
+            <if test="articleCommentCount != null">article_comment_count=#{articleCommentCount},</if>
+        </trim>
+        where article_id=#{articleId}
+    </update>
+</mapper>
