@@ -1,7 +1,8 @@
 package com.tsukiseele.potofu.controllers
 
 import com.tsukiseele.potofu.app.Config
-import com.tsukiseele.potofu.helper.R
+import com.tsukiseele.potofu.helper.badRequest
+import com.tsukiseele.potofu.helper.*
 import com.tsukiseele.potofu.models.Image
 import com.tsukiseele.potofu.services.ImageService
 import com.tsukiseele.potofu.utils.SystemUtil
@@ -50,10 +51,10 @@ class UploadController @Autowired constructor(private val imageService: ImageSer
                 }
             }
             val ref: String = Config.get()!!.fileUploadUrlPrefix + fileName
-            return R.created().map(Pair("ref", ref))
+            return mapOf(Pair("ref", ref)).ok()
         } catch (e: Exception) {
             e.printStackTrace()
-            return R.badRequest().message("上传失败: " + e.message)
+            return badRequest("上传失败: " + e.message)
         }
     }
 
@@ -88,10 +89,10 @@ class UploadController @Autowired constructor(private val imageService: ImageSer
             }
             val ref: String = Config.get()!!.fileUploadUrlPrefix + fileName
             imageService.addImage(Image(114514, 0, ref, Date(), md5))
-            return R.created().map(Pair("ref", ref))
+            return mapOf(Pair("ref", ref)).ok()
         } catch (e: Exception) {
             e.printStackTrace()
-            return R.badRequest().message("上传失败: " + e.message)
+            return badRequest("上传失败: " + e.message)
         }
     }
 }

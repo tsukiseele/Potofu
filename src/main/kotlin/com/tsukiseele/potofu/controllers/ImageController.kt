@@ -1,6 +1,6 @@
 package com.tsukiseele.potofu.controllers
 
-import com.tsukiseele.potofu.helper.R
+import com.tsukiseele.potofu.helper.*
 import com.tsukiseele.potofu.models.Image
 import com.tsukiseele.potofu.services.ImageService
 import org.apache.ibatis.annotations.Param
@@ -13,35 +13,34 @@ import java.util.*
 @RequestMapping("image")
 class ImageController @Autowired constructor(val imageService: ImageService) {
     @PutMapping
-    fun addImage(@RequestBody image: Image): ResponseEntity<MutableMap<String, Any>> {
+    fun addImage(@RequestBody image: Image): ResponseEntity<*> {
         image.imgDate = Date()
-
         return if (imageService.addImage(image)) {
-            R.created().map(Pair("message", "上传成功"))
+            mapOf(Pair("message", "上传成功")).created()
         } else {
-            R.failed().message("创建失败")
+            badRequest("创建失败")
         }
     }
 
     @GetMapping("/hash/{hash}")
-    fun getImageByHash(@PathVariable hash: String): ResponseEntity<Image> {
-        return R.ok().data(imageService.getImageByImageHash(hash))
+    fun getImageByHash(@PathVariable hash: String): ResponseEntity<R<Image>> {
+        return imageService.getImageByImageHash(hash).ok()
     }
 
     @GetMapping("/{id}")
-    fun getImagesByUserId(@PathVariable id: Int): ResponseEntity<List<Image>> {
-        return R.ok().data(imageService.getImageByUserId(id))
+    fun getImagesByUserId(@PathVariable id: Int): ResponseEntity<R<List<Image>>> {
+        return imageService.getImageByUserId(id).ok()
     }
 
     @GetMapping
     fun getImagesByRange(@Param("index") index: Int, @Param("count") count: Int)
-            : ResponseEntity<List<Image>> {
-        return R.ok().data(imageService.getImageByRange(index, count))
+            : ResponseEntity<R<List<Image>>> {
+        return imageService.getImageByRange(index, count).ok()
     }
 
     @GetMapping("/all")
     fun getAllImages()
-            : ResponseEntity<List<Image>> {
-        return R.ok().data(imageService.getAllImage())
+            : ResponseEntity<R<List<Image>>> {
+        return imageService.getAllImage().ok()
     }
 }

@@ -3,84 +3,42 @@ package com.tsukiseele.potofu.helper
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 
-open class R {
-    class Successful {
-        private var httpStatus: HttpStatus = HttpStatus.OK
+inline fun <T> T.responseMap(status: R.Status, message: String? = null, data: MutableMap<String, Any?>.() -> Unit): ResponseEntity<R<MutableMap<String, Any?>>> {
+    return R.create(mutableMapOf<String, Any?>().also { data(it) }, status, message)
+}
 
-        fun status(httpStatus: HttpStatus): Successful {
-            this.httpStatus = httpStatus
-            return this
-        }
+fun <T> T.ok(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.OK, message);
+fun <T> T.created(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.CREATED, message);
+fun <T> T.noContent(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.NO_CONTENT, message);
+fun <T> T.badRequest(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.BAD_REQUEST, message);
+fun <T> T.unauthorized(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.UNAUTHORIZED, message);
+fun <T> T.forbidden(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.FORBIDDEN, message);
+fun <T> T.notFound(message: String? = null): ResponseEntity<R<T>> = R.create(this, R.Status.NOT_FOUND, message)
 
-        fun <T> data(data: T): ResponseEntity<T> {
-            return ResponseEntity.status(httpStatus).body(data)
-        }
+open class R<T>(
+    var data: T? = null,
+    var code: Int? = null,
+    var message: String? = null,
+    var success: Boolean? = null) {
 
-        fun map(vararg pairs: Pair<String, Any>): ResponseEntity<MutableMap<String, Any>> {
-            return ResponseEntity.status(httpStatus).body(mutableMapOf(*pairs))
-        }
-
-        fun message(message: String): ResponseEntity<MutableMap<String, Any>> {
-            return map(Pair("message", message))
-        }
-
-    }
-
-    class Failed {
-        private var httpStatus: HttpStatus = HttpStatus.BAD_REQUEST
-
-        fun status(httpStatus: HttpStatus): Failed {
-            this.httpStatus = httpStatus
-            return this
-        }
-
-        fun message(message: String): ResponseEntity<MutableMap<String, Any>> {
-            return map(
-                    Pair("code", httpStatus.value()),
-                    Pair("status", httpStatus.reasonPhrase),
-                    Pair("message", message))
-        }
-
-        fun map(vararg pairs: Pair<String, Any>): ResponseEntity<MutableMap<String, Any>> {
-            return ResponseEntity.status(httpStatus).body(mutableMapOf(*pairs))
-        }
+    enum class Status(val code: Int, val message: String) {
+        OK(200, "OK"),
+        CREATED(201, "Created"),
+        NO_CONTENT(204, "No Content"),
+        BAD_REQUEST(400, "Bad Request"),
+        UNAUTHORIZED(401, "Unauthorized"),
+        FORBIDDEN(403, "Forbidden"),
+        NOT_FOUND(404, "Not Found")
     }
 
     companion object {
-        fun success(httpStatus: HttpStatus = HttpStatus.OK): Successful {
-            return Successful().status(httpStatus)
-        }
-        // 200
-        fun ok(): Successful {
-            return Successful().status(HttpStatus.OK)
-        }
-        // 201
-        fun created(): Successful {
-            return Successful().status(HttpStatus.CREATED)
-        }
-        // 204
-        fun noContent(): Successful {
-            return Successful().status(HttpStatus.NO_CONTENT)
-        }
-        // 400
-        fun failed(httpStatus: HttpStatus = HttpStatus.BAD_REQUEST): Failed {
-            return Failed().status(httpStatus)
-        }
-        // 400
-        fun badRequest(): Failed {
-            return Failed().status(HttpStatus.BAD_REQUEST)
-        }
-        // 401
-        fun unauth(): Failed {
-            return Failed().status(HttpStatus.UNAUTHORIZED)
-        }
-        // 403
-        fun forbidden(): Failed {
-            return Failed().status(HttpStatus.FORBIDDEN)
-        }
-        // 404
-        fun notFound(): Failed {
-            return Failed().status(HttpStatus.NOT_FOUND)
+        fun <T> create(data: T, status: Status, message: String? = null): ResponseEntity<R<T>> {
+            return ResponseEntity.status(HttpStatus.OK).body(R(
+                data,
+                status.code,
+                message ?: status.message,
+                status == Status.OK
+            ));
         }
     }
 }

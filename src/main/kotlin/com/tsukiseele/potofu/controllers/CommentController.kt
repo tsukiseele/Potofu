@@ -1,6 +1,7 @@
 package com.tsukiseele.potofu.controllers
 
 import com.tsukiseele.potofu.helper.R
+import com.tsukiseele.potofu.helper.ok
 import com.tsukiseele.potofu.models.Comment
 import com.tsukiseele.potofu.models.CommentNode
 import com.tsukiseele.potofu.services.CommentService
@@ -12,22 +13,22 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping(value = ["/comment"])
 class CommentController @Autowired constructor(private val commentService: CommentService) {
     @PutMapping
-    fun add(@RequestBody comment: Comment): ResponseEntity<Any?>? {
-        return R.ok().data(commentService.add(comment))
+    fun add(@RequestBody comment: Comment): ResponseEntity<*> {
+        return commentService.add(comment).ok()
     }
 
     @GetMapping("uid/{uid}")
-    fun getByUserId(@PathVariable(value = "uid") uid: Int): ResponseEntity<List<Comment?>?> {
-        return R.ok().data(commentService.getCommentByUserId(uid))
+    fun getByUserId(@PathVariable(value = "uid") uid: Int): ResponseEntity<R<List<Comment?>?>> {
+        return commentService.getCommentByUserId(uid).ok()
     }
 
     @GetMapping
-    fun getByArticleId(@RequestParam(value = "article_id") articleId: Int): ResponseEntity<List<Comment?>?> {
-        return R.ok().data(commentService.getCommentByArticleId(articleId))
+    fun getByArticleId(@RequestParam(value = "article_id") articleId: Int): ResponseEntity<R<List<Comment?>?>> {
+        return commentService.getCommentByArticleId(articleId).ok()
     }
 
     @GetMapping("/tree/{article_id}")
-    fun getCommentTreeByArticleId(@PathVariable(value = "article_id") articleId: Int): ResponseEntity<List<CommentNode?>?> {
-        return R.ok().data(commentService.getCommentTreeByArticleId(articleId))
+    fun getCommentTreeByArticleId(@PathVariable(value = "article_id") articleId: Int): ResponseEntity<R<List<CommentNode?>?>> {
+        return commentService.getCommentTreeByArticleId(articleId).ok()
     }
 }
