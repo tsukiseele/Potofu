@@ -125,12 +125,9 @@ open class RedisConfig: CachingConfigurerSupport() {
      */
     private fun generateCacheConfigMap(): MutableMap<String, RedisCacheConfiguration> {
         val initialCacheConfiguration = mutableMapOf<String, RedisCacheConfiguration>()
-        initialCacheConfiguration.put("hourCache",
-                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1))) // 1小时
-        initialCacheConfiguration.put("minCache",
-                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(1))) // 1分钟
-        initialCacheConfiguration.put("dayCache",
-                RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofDays(1))) // 1天
+        initialCacheConfiguration["hourCache"] = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(1)) // 1小时
+        initialCacheConfiguration["minCache"] = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(1)) // 1分钟
+        initialCacheConfiguration["dayCache"] = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofDays(1)) // 1天
         return initialCacheConfiguration
     }
 }

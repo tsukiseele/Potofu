@@ -37,9 +37,7 @@ class UserServiceImpl
         // 对密码的Base64进行Md5加密
         val password = DigestUtils.md5Hex(Base64.getEncoder().encode(loginPassword.toByteArray()))
         // 验证用户
-        val user = userMapper.queryOne(loginEmail, password)
-        if (user == null)
-            return HttpStatus.UNAUTHORIZED
+        val user = userMapper.queryOne(loginEmail, password) ?: return HttpStatus.UNAUTHORIZED
 
         return user.let {
             it.userLastLoginIp = IpUtil.clientIp(request)
@@ -65,8 +63,9 @@ class UserServiceImpl
     override fun auth(request: HttpServletRequest): Any? {
         val token = CookieUtil.getCookie(request, "token")
         if (TokenPool.exists(token)) {
-            val tk: Token = TokenPool.get(token) ?: return null
+            val tk: Token = TokenPool[token] ?: return null
             // 如果需要更高的安全性，建议查询数据库对比，这里优化性能直接返回数据
+            println(tk.user)
             return tk.user
         } else {
             return null

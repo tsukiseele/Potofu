@@ -40,20 +40,20 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 //    JSON Parser
-    compile 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.google.code.gson:gson:2.6.2'
 //    Redis Lettuce 依赖
     implementation 'org.apache.commons:commons-pool2'
 //    MariaDB/MySQL Database Connection
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.4.1'
 //    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.18'
 //    MyBatis-Plus Framwork
-    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.3.1.tmp'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.3.1.tmp'
 //    File upload
-    compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 //    实用IO库
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 //    编码工具库
-    compile group: 'commons-codec', name: 'commons-codec', version: '1.12'
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.12'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

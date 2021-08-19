@@ -19,7 +19,7 @@ open class R<T>(
     var data: T? = null,
     var code: Int? = null,
     var message: String? = null,
-    var success: Boolean? = null) {
+    var ok: Boolean? = null) {
 
     enum class Status(val code: Int, val message: String) {
         OK(200, "OK"),
@@ -37,7 +37,7 @@ open class R<T>(
                 data,
                 status.code,
                 message ?: status.message,
-                status == Status.OK
+                status.code in 200..299
             ));
         }
     }

@@ -5,7 +5,7 @@ import java.io.Serializable
 import java.util.*
 
 @Noarg
-class User(
+data class User(
         var userId: Int,
         var userName: String?,
         var userPassword: String?,

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.*
 
-
 @Service
 open class ArticleServiceImpl
 @Autowired constructor(private val articleMapper: ArticleMapper) : ArticleService {
@@ -36,8 +35,7 @@ open class ArticleServiceImpl
      * @return
      */
     override fun getOne(articleId: Int): Article? {
-        val article = articleMapper.query(articleId)
-        return article
+        return articleMapper.query(articleId)
     }
 
     /**
