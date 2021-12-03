@@ -17,14 +17,14 @@ class UserController
     @PostMapping("/login")
     fun login(@RequestBody user: User, request: HttpServletRequest): ResponseEntity<*> {
         userService.login(user, request).also {
-            if (it is HttpStatus) {
-                return when (it) {
+            return if (it is HttpStatus) {
+                when (it) {
                     HttpStatus.BAD_REQUEST -> badRequest("登录失败：用户名和密码不能为空")
                     HttpStatus.UNAUTHORIZED -> unauthorized("登录失败：用户名或密码错误")
                     else -> badRequest("登录失败")
                 }
             } else {
-                return it.ok()
+                it.ok()
             }
         }
     }
@@ -42,7 +42,11 @@ class UserController
     @PostMapping("/auth")
     fun auth(request: HttpServletRequest): ResponseEntity<*> {
         return userService.auth(request).let {
-            it?.ok() ?: unauthorized("失效的登录信息，请重新登录")
+            if (it == null) {
+                unauthorized("失效的登录信息，请重新登录")
+            } else {
+                it.ok()
+            }
         }
     }
 }

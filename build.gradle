@@ -62,7 +62,7 @@ dependencies {
 
 // 使Kotlin数据类可以自动配置无参构造函数
 noArg {
-    annotation("com.tsukiseele.kotlin.Noarg")
+    annotation("com.tsukiseele.potofu.kotlin.Noarg")
 }
 
 test {

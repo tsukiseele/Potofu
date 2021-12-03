@@ -1,6 +1,6 @@
 package com.tsukiseele.potofu.models
 
-import com.tsukiseele.kotlin.Noarg
+import com.tsukiseele.potofu.kotlin.Noarg
 import java.io.Serializable
 import java.util.*
 

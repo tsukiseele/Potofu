@@ -62,13 +62,14 @@ class UserServiceImpl
 
     override fun auth(request: HttpServletRequest): Any? {
         val token = CookieUtil.getCookie(request, "token")
+        println(token)
         if (TokenPool.exists(token)) {
             val tk: Token = TokenPool[token] ?: return null
             // 如果需要更高的安全性，建议查询数据库对比，这里优化性能直接返回数据
             println(tk.user)
             return tk.user
         } else {
-            return null
+            return null;
         }
     }
 }
